@@ -2,6 +2,8 @@
 
 **The x402 builder stack for Sui — accept agent payments on Sui in one `npm run`.**
 
+**Live:** [x402-sui-stack.netlify.app](https://x402-sui-stack.netlify.app) — live facilitator status + verify the mainnet receipt in your browser.
+
 [x402](https://x402.org) is the HTTP-native payment standard for the agent
 economy: a server answers `402 Payment Required` with machine-readable terms, the
 client signs an exact payment, and a *facilitator* settles it on-chain. This repo

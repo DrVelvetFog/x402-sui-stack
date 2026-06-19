@@ -2,6 +2,7 @@
 
 **Track:** DeFi & Payments (core) — *Infrastructure & Tooling*
 **One-liner:** The x402 builder stack for Sui — accept agent payments on Sui in one `npm run`.
+**Live demo:** https://x402-sui-stack.netlify.app — live facilitator status + recompute the mainnet receipt in your browser.
 
 ## What it is
 
@@ -113,6 +114,7 @@ links to them and adds the one missing piece (the runnable, resource-side demo).
 
 ## Links
 
+- **Live demo / verify:** https://x402-sui-stack.netlify.app
 - This repo: https://github.com/DrVelvetFog/x402-sui-stack
 - Rail (facilitator): https://github.com/DrVelvetFog/sui-x402-facilitator · live https://sui-facilitator.onrender.com
 - Tooling: https://github.com/DrVelvetFog/x402-pilot
