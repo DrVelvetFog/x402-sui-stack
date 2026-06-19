@@ -23,9 +23,10 @@
   h1 .sub { color: var(--accent); }
   .lede { color: var(--muted); font-size: 18px; max-width: 70ch; margin: 0 0 22px; }
   .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
-  .btn { font: 600 14px var(--sans); padding: 9px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: 600 14px var(--sans); padding: 10px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; text-decoration: none; white-space: nowrap; }
   .btn.primary { background: linear-gradient(180deg, #2f7ff0, #2563d8); border-color: #2f7ff0; color: #fff; }
-  .btn:hover { border-color: var(--accent); }
+  .btn:hover { border-color: var(--accent); text-decoration: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
   .grid { display: grid; gap: 16px; }
   @media (min-width: 760px) { .grid.cols-2 { grid-template-columns: 1fr 1fr; } }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
@@ -106,7 +107,7 @@
     <input id="digest" value="EVGJpzy383YkrZntGgTm1SZBeXPqguKG9euypYptsKrm" spellcheck="false" />
     <label for="payTo">Recipient (payTo)</label>
     <input id="payTo" value="0x31aa98bff7c5ee4fb174b220a20a0ff2b24d34c30a7f3af3f84823d717a60234" spellcheck="false" />
-    <div style="margin-top:14px"><button class="btn primary" id="go">Recompute on-chain ↻</button>
+    <div class="actions"><button class="btn primary" id="go">Recompute on-chain ↻</button>
       <a class="btn" id="explorer" href="#" target="_blank" rel="noopener">Open in explorer ↗</a></div>
     <div class="result" id="result"></div>
   </div>
