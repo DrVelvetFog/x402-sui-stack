@@ -1,0 +1,6 @@
+x402-sui-stack
+Copyright 2026 UIG Studios LLC
+
+The x402 builder stack for Sui: a non-custodial payments facilitator, developer
+tooling (x402-pilot + conformance MCP), and a runnable golden-path demo settling
+a paid API call on Sui. Built on the x402 v2 standard (x402-foundation/x402).
