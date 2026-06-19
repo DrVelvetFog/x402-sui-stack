@@ -114,6 +114,7 @@ links to them and adds the one missing piece (the runnable, resource-side demo).
 
 ## Links
 
+- **Demo video:** https://youtu.be/g6Axa1DzXro
 - **Live demo / verify:** https://x402-sui-stack.netlify.app
 - This repo: https://github.com/DrVelvetFog/x402-sui-stack
 - Rail (facilitator): https://github.com/DrVelvetFog/sui-x402-facilitator · live https://sui-facilitator.onrender.com
