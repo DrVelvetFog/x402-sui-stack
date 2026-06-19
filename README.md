@@ -1,3 +1,5 @@
+<p align="center"><img src="brand/png/banner-1040x280.png" alt="x402-sui-stack" width="520"></p>
+
 # x402-sui-stack
 
 **The x402 builder stack for Sui — accept agent payments on Sui in one `npm run`.**
