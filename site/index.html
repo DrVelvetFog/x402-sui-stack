@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>x402-sui-stack — the x402 builder stack for Sui</title>
+<meta name="description" content="Accept agent payments on Sui. A non-custodial x402 facilitator, dev tooling, and a golden-path demo — proven on Sui mainnet." />
+<style>
+  :root {
+    --bg: #0a0e1a; --panel: #121829; --panel2: #0e1322; --line: #233048;
+    --ink: #e7edf7; --muted: #93a1bd; --accent: #4da3ff; --accent2: #5ee0c8;
+    --ok: #36d399; --bad: #ff6b6b; --warn: #ffce6b;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: radial-gradient(1200px 600px at 70% -10%, #16213c 0%, var(--bg) 55%); color: var(--ink); font-family: var(--sans); line-height: 1.55; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 20px 80px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .tag { display: inline-block; font: 600 12px/1 var(--sans); letter-spacing: .04em; text-transform: uppercase; color: var(--accent2); background: #0f2a2a; border: 1px solid #1d4d47; padding: 6px 10px; border-radius: 999px; }
+  h1 { font-size: 40px; line-height: 1.1; margin: 18px 0 8px; letter-spacing: -0.02em; }
+  h1 .sub { color: var(--accent); }
+  .lede { color: var(--muted); font-size: 18px; max-width: 70ch; margin: 0 0 22px; }
+  .links { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+  .btn { font: 600 14px var(--sans); padding: 9px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+  .btn.primary { background: linear-gradient(180deg, #2f7ff0, #2563d8); border-color: #2f7ff0; color: #fff; }
+  .btn:hover { border-color: var(--accent); }
+  .grid { display: grid; gap: 16px; }
+  @media (min-width: 760px) { .grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card h2 { font-size: 16px; margin: 0 0 4px; letter-spacing: .01em; }
+  .card .hint { color: var(--muted); font-size: 13px; margin: 0 0 14px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .k { color: var(--muted); font-size: 13px; }
+  .v { font-family: var(--mono); font-size: 13px; text-align: right; word-break: break-all; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--muted); margin-right: 7px; vertical-align: middle; }
+  .dot.ok { background: var(--ok); box-shadow: 0 0 0 3px #36d39922; }
+  .dot.bad { background: var(--bad); }
+  .pill { font: 600 12px var(--mono); padding: 3px 8px; border-radius: 6px; background: var(--panel2); border: 1px solid var(--line); color: var(--muted); }
+  .pill.ok { color: var(--ok); border-color: #1c5a44; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  input { width: 100%; font-family: var(--mono); font-size: 13px; color: var(--ink); background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  input:focus { outline: none; border-color: var(--accent); }
+  .result { margin-top: 14px; font-family: var(--mono); font-size: 13px; }
+  .result .big { font-size: 15px; }
+  .ok-text { color: var(--ok); } .bad-text { color: var(--bad); } .muted { color: var(--muted); }
+  .flow { display: grid; gap: 10px; }
+  .step { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; }
+  .step .n { width: 26px; height: 26px; border-radius: 50%; background: var(--panel2); border: 1px solid var(--line); display: grid; place-items: center; font: 600 13px var(--mono); color: var(--accent2); }
+  .step .t { font-size: 14px; } .step .t small { color: var(--muted); display: block; font-size: 12px; }
+  .changes { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+  .changes .ln { display: flex; justify-content: space-between; gap: 10px; font-family: var(--mono); font-size: 12px; padding: 3px 0; }
+  .plus { color: var(--ok); } .minus { color: var(--muted); }
+  footer { color: var(--muted); font-size: 13px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 18px; }
+  code { font-family: var(--mono); background: var(--panel2); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; font-size: 13px; }
+  .section-title { margin: 38px 0 12px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="tag">Sui Overflow 2026 · DeFi &amp; Payments · Infra &amp; Tooling</span>
+  <h1>x402-sui-stack<br><span class="sub">accept agent payments on Sui</span></h1>
+  <p class="lede">
+    <a href="https://x402.org" target="_blank" rel="noopener">x402</a> is the HTTP-native payment standard for the agent economy.
+    This is the stack to use it on <strong>Sui</strong>: a non-custodial settlement rail, developer tooling, the standards work — and a
+    golden-path demo that pays a real API call and verifies it on-chain. <strong>Live on Sui mainnet.</strong>
+  </p>
+  <div class="links">
+    <a class="btn primary" href="https://github.com/DrVelvetFog/x402-sui-stack" target="_blank" rel="noopener">GitHub repo ↗</a>
+    <a class="btn" href="https://sui-facilitator.onrender.com/health" target="_blank" rel="noopener">Facilitator ↗</a>
+    <a class="btn" href="https://github.com/x402-foundation/x402/pull/2666" target="_blank" rel="noopener">Spec extension #2666 ↗</a>
+  </div>
+
+  <div class="section-title">Is the rail live right now?</div>
+  <div class="grid cols-2">
+    <div class="card">
+      <h2><span id="healthDot" class="dot"></span>Facilitator status</h2>
+      <p class="hint">Pinged live from your browser — <code>GET /health</code> + <code>/supported</code>.</p>
+      <div id="statusRows">
+        <div class="row"><span class="k">service</span><span class="v" id="svc">checking…</span></div>
+        <div class="row"><span class="k">custody</span><span class="v" id="custody">—</span></div>
+        <div class="row"><span class="k">fees</span><span class="v" id="fees">—</span></div>
+        <div class="row"><span class="k">networks</span><span class="v" id="nets">—</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>The x402 → Sui flow</h2>
+      <p class="hint">What one paid request does. The demo prints exactly this.</p>
+      <div class="flow">
+        <div class="step"><span class="n">1</span><span class="t">402 Payment Required<small>server answers with machine-readable terms</small></span></div>
+        <div class="step"><span class="n">2</span><span class="t">Sign exact payment<small>the agent signs — the facilitator never holds keys</small></span></div>
+        <div class="step"><span class="n">3</span><span class="t">Settle on Sui<small>facilitator broadcasts the payer's own signed tx</small></span></div>
+        <div class="step"><span class="n">4</span><span class="t">Recompute on-chain<small>net credit to payTo must equal the price</small></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Don't trust us — recompute a real mainnet settlement</div>
+  <div class="card">
+    <h2>Verify the settlement</h2>
+    <p class="hint">A real <strong>$0.01 USDC</strong> payment settled on Sui mainnet on 2026-06-19. Recompute the on-chain net credit to the recipient, live, from a public Sui fullnode — the same check the conformance MCP makes.</p>
+    <label for="digest">Mainnet transaction digest</label>
+    <input id="digest" value="EVGJpzy383YkrZntGgTm1SZBeXPqguKG9euypYptsKrm" spellcheck="false" />
+    <label for="payTo">Recipient (payTo)</label>
+    <input id="payTo" value="0x31aa98bff7c5ee4fb174b220a20a0ff2b24d34c30a7f3af3f84823d717a60234" spellcheck="false" />
+    <div style="margin-top:14px"><button class="btn primary" id="go">Recompute on-chain ↻</button>
+      <a class="btn" id="explorer" href="#" target="_blank" rel="noopener">Open in explorer ↗</a></div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <footer>
+    <strong>x402-sui-stack</strong> — Apache-2.0 © UIG Studios LLC ·
+    pairs with the <a href="https://github.com/DrVelvetFog/sui-x402-facilitator" target="_blank" rel="noopener">facilitator</a>,
+    <a href="https://github.com/DrVelvetFog/x402-pilot" target="_blank" rel="noopener">x402-pilot</a>, and spec
+    <a href="https://github.com/x402-foundation/x402/pull/2666" target="_blank" rel="noopener">#2666</a>.
+    Built for Sui Overflow 2026. Non-custodial · zero-fee.
+  </footer>
+</div>
+
+<script>
+  const FACILITATOR = "https://sui-facilitator.onrender.com";
+  const RPC = "https://fullnode.mainnet.sui.io:443";
+  const USDC_MAINNET = "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC";
+  const EXPECTED = 10000n; // $0.01 USDC, 6 decimals
+
+  const $ = (id) => document.getElementById(id);
+  const short = (s) => s && s.length > 18 ? s.slice(0, 10) + "…" + s.slice(-6) : s;
+  const eq = (a, b) => (a || "").toLowerCase() === (b || "").toLowerCase();
+
+  // --- live facilitator status ---
+  async function checkStatus() {
+    try {
+      const [h, s] = await Promise.all([
+        fetch(FACILITATOR + "/health").then(r => r.json()),
+        fetch(FACILITATOR + "/supported").then(r => r.json()),
+      ]);
+      $("healthDot").className = "dot ok";
+      $("svc").textContent = h?.facilitator?.service ?? "up";
+      $("custody").textContent = h?.facilitator?.custody?.split("—")[0]?.trim() ?? "none";
+      $("fees").textContent = h?.facilitator?.fees ?? "none";
+      const nets = [...new Set((s?.kinds ?? []).map(k => k.network))];
+      $("nets").innerHTML = nets.map(n => `<span class="pill ok">${n}</span>`).join(" ") || "—";
+    } catch (e) {
+      $("healthDot").className = "dot bad";
+      $("svc").textContent = "unreachable";
+    }
+  }
+
+  // --- in-browser recompute (raw sui_getTransactionBlock) ---
+  async function recompute() {
+    const digest = $("digest").value.trim();
+    const payTo = $("payTo").value.trim();
+    const out = $("result");
+    out.innerHTML = '<span class="muted">querying Sui mainnet…</span>';
+    try {
+      const body = { jsonrpc: "2.0", id: 1, method: "sui_getTransactionBlock",
+        params: [digest, { showBalanceChanges: true, showEffects: true }] };
+      const j = await fetch(RPC, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }).then(r => r.json());
+      if (j.error || !j.result) { out.innerHTML = `<span class="bad-text">RPC: ${j.error?.message ?? "transaction not found"}</span>`; return; }
+      const bc = j.result.balanceChanges ?? [];
+      const status = j.result.effects?.status?.status;
+      let net = 0n;
+      for (const c of bc) {
+        const owner = c?.owner?.AddressOwner ?? c?.owner?.addressOwner ?? c?.owner;
+        if (eq(owner, payTo) && eq(c?.coinType, USDC_MAINNET)) net += BigInt(c.amount);
+      }
+      const match = net === EXPECTED;
+      const lines = bc.map(c => {
+        const owner = c?.owner?.AddressOwner ?? c?.owner?.addressOwner ?? c?.owner ?? "?";
+        const amt = BigInt(c.amount);
+        const sym = c.coinType.endsWith("::USDC") ? "USDC" : c.coinType.endsWith("::SUI") ? "SUI" : short(c.coinType);
+        const cls = amt >= 0n ? "plus" : "minus";
+        return `<div class="ln"><span class="muted">${short(owner)}</span><span class="${cls}">${amt >= 0n ? "+" : ""}${amt} ${sym}</span></div>`;
+      }).join("");
+      out.innerHTML =
+        `<div class="big">execution status: <span class="${status === "success" ? "ok-text" : "bad-text"}">${status}</span></div>` +
+        `<div class="big">net to payTo: <strong>${net}</strong> atomic USDC &nbsp; vs advertised <strong>${EXPECTED}</strong> &nbsp; ` +
+        `${match ? '<span class="ok-text">✓ verified — recompute matched</span>' : '<span class="bad-text">✗ mismatch</span>'}</div>` +
+        `<div class="changes">${lines}</div>`;
+    } catch (e) {
+      out.innerHTML = `<span class="bad-text">failed: ${e.message} (the public RPC may have blocked the request — try again)</span>`;
+    }
+  }
+
+  function syncExplorer() {
+    $("explorer").href = "https://suivision.xyz/txblock/" + $("digest").value.trim();
+  }
+
+  $("go").addEventListener("click", recompute);
+  $("digest").addEventListener("input", syncExplorer);
+  checkStatus();
+  syncExplorer();
+</script>
+</body>
+</html>
