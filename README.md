@@ -16,7 +16,7 @@ call and verifies it on-chain.
 
 | Layer | What | Where |
 |---|---|---|
-| **Rail** | The first x402 facilitator to settle on **Sui mainnet** — non-custodial, zero-fee, with an optional Enoki gas station so payers need no SUI for gas | [sui-x402-facilitator](https://github.com/DrVelvetFog/sui-x402-facilitator) ([live](https://sui-facilitator.onrender.com/health)) |
+| **Rail** | An x402 facilitator settling on **Sui mainnet** — non-custodial, zero-fee, with an optional Enoki gas station so payers need no SUI for gas | [sui-x402-facilitator](https://github.com/DrVelvetFog/sui-x402-facilitator) ([live](https://sui-facilitator.onrender.com/health)) |
 | **Tooling** | A Claude Code plugin + an MCP server that lints x402 flows and **recomputes any settlement** from on-chain truth | [x402-pilot](https://github.com/DrVelvetFog/x402-pilot) |
 | **Standard** | Co-authored settlement-receipt binding extension to the x402 spec | [x402-foundation/x402#2666](https://github.com/x402-foundation/x402/pull/2666) |
 | **Demo** | This repo — a paid resource, settled on Sui, independently verified | [`examples/quickstart`](examples/quickstart) |
